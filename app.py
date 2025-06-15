@@ -1,12 +1,10 @@
 from flask import Flask, render_template_string
+import os
 
-# === FLASK APP ===
 app = Flask(__name__)
 
-# === LINK FORM GOOGLE FORM CỦA BẠN ===
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdcwgPmynO6D2eailGclDiy6_JnHsPWb4XrYOkHzeGWwBJ4qA/viewform?embedded=true"
 
-# === HTML GIAO DIỆN ===
 HTML_TEMPLATE = f"""
 <!DOCTYPE html>
 <html>
@@ -45,4 +43,5 @@ def index():
     return render_template_string(HTML_TEMPLATE)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # lấy PORT do Render cấp
+    app.run(host='0.0.0.0', port=port, debug=True)
