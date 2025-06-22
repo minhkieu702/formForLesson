@@ -9,19 +9,29 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
+
 # === CONFIG ===
+import json
+
 SPREADSHEET_ID = '19gc4qsNR45ek_P-h4XBGeHyPvTR8tXPMllv6vu6aKr8'  # form sheet
 INFLUENCER_SPREADSHEET_ID = '18Pw59giiDPGEF4Z32PxhXljhGsGrhenz4lRoqQBHxxM'
 RANGE_NAME = "'Data'!A1:Z"
 CHECK_INTERVAL = 10
-SERVICE_ACCOUNT_FILE = 'credentials.json'
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
 DASHBOARD_FOLDER_ID = '1mc1YjttlTCaG4XwpIuVSnImdWBEh1-YL'  # Drive folder
 
 # === GOOGLE API SETUP ===
-credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+cred_json_str = os.environ.get("GOOGLE_CREDENTIALS_JSON")
+if not cred_json_str:
+    raise Exception("❌ Thiếu biến môi trường GOOGLE_CREDENTIALS_JSON")
+
+credentials = service_account.Credentials.from_service_account_info(
+    json.loads(cred_json_str), scopes=SCOPES
+)
+
 sheets_service = build('sheets', 'v4', credentials=credentials)
 drive_service = build('drive', 'v3', credentials=credentials)
+
 
 # === FLASK APP ===
 app = Flask(__name__)
@@ -217,6 +227,7 @@ def poll_google_sheet():
 
 # === RUN FLASK + THREAD ===
 threading.Thread(target=poll_google_sheet, daemon=True).start()
+
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))  # lấy PORT do Railway cung cấp
