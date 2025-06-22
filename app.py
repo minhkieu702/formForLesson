@@ -133,7 +133,7 @@ def generate_dashboard_pdf(row_data, output_path='dashboard.pdf'):
     pdf.cell(0, 10, "Influencer Campaign Dashboard", ln=True)
 
     pdf.set_font("Arial", '', 12)
-    for key in ['Business', 'Industry', 'Goal', 'KOL Type', 'Country']:
+    for key in ['Business', 'Industry', 'Goal', 'KOL Type', 'Email Contact']:
         pdf.cell(0, 8, f"{key}: {data.get(key, '')}", ln=True)
 
     pdf.ln(5)
