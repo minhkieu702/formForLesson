@@ -72,7 +72,7 @@ def index():
 # === UTILITIES ===
 def generate_dashboard_pdf(row_data, output_path='dashboard.pdf'):
         #  Parse dữ liệu chiến dịch từ 1 dòng của Google Sheet (dữ liệu form gửi lên)
-    headers = ['Timestamp', 'Business', 'Industry', 'Goal', 'KOL Type', 'Country', '', '', '', '', '', 'Email']
+    headers = ['Timestamp', 'Business', 'Industry', 'Target', '', 'Email Contact', '', '', '', 'Goal', 'KOL Type', 'Country']
     data = dict(zip(headers, row_data[:len(headers)]))
     country = str(data.get("Country", "")).strip().lower()
     kol_type = str(data.get("KOL Type", "")).strip().lower().split()[0]
@@ -133,7 +133,7 @@ def generate_dashboard_pdf(row_data, output_path='dashboard.pdf'):
     pdf.cell(0, 10, "Influencer Campaign Dashboard", ln=True)
 
     pdf.set_font("Arial", '', 12)
-    for key in ['Business', 'Industry', 'Goal', 'KOL Type', 'Email Contact']:
+    for key in ['Business', 'Industry', 'Goal', 'KOL Type', 'Country']:
         pdf.cell(0, 8, f"{key}: {data.get(key, '')}", ln=True)
 
     pdf.ln(5)
