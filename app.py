@@ -1,4 +1,5 @@
 from flask import Flask, render_template_string
+import os
 import time
 import threading
 import pandas as pd
@@ -218,4 +219,5 @@ def poll_google_sheet():
 threading.Thread(target=poll_google_sheet, daemon=True).start()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))  # lấy PORT do Railway cung cấp
+    app.run(host='0.0.0.0', port=port)
